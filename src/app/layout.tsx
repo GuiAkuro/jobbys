@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
+import { TRPCReactProvider } from "@/server/api/trpc/react";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html className={inter.className} lang="en">
+      <body className="h-screen overflow-hidden bg-neutral-900 text-neutral-100">
+        <TRPCReactProvider headers={headers()}>{children}</TRPCReactProvider>
+      </body>
     </html>
   );
 }

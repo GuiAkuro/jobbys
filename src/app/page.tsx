@@ -1,7 +1,13 @@
+"use client";
+
+import { api } from "@/server/api/trpc/react";
+
 export default function Home() {
+  const user = api.user.getUser.useQuery();
+
   return (
-    <main>
-      <h1>Hello</h1>
-    </main>
+    <div>
+      <h1>{user.data}</h1>
+    </div>
   );
 }
