@@ -4,6 +4,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { api } from "@/server/api/trpc/react";
+import { Button } from "@/components/ui/button";
+import { Header } from "@/components/header";
+import { Input } from "@/components/ui/input";
 
 interface SignUpFormProps {}
 
@@ -43,61 +46,64 @@ export function SignUpForm({}: SignUpFormProps) {
 
   return (
     <div>
-      <form className="p-6" onSubmit={signUpForm.handleSubmit(handleSignUp)}>
-        <div className="flex flex-col">
-          <label htmlFor="">E-mail</label>
-          <input
-            className="border text-black"
-            type="text"
-            {...signUpForm.register("email")}
-          />
+      <Header />
+      <div className="container mx-auto">
+        <form className="p-6" onSubmit={signUpForm.handleSubmit(handleSignUp)}>
+          <div className="mb-4 flex flex-col">
+            <label className="mb-1 text-sm" htmlFor="">
+              E-mail
+            </label>
+            <Input {...signUpForm.register("email")} />
 
-          {signUpForm.formState.errors["email"] && (
-            <p>{signUpForm.formState.errors["email"].message}</p>
-          )}
-        </div>
+            {signUpForm.formState.errors["email"] && (
+              <p className="mt-1 text-sm text-red-400">
+                {signUpForm.formState.errors["email"].message}
+              </p>
+            )}
+          </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="">Nome</label>
-          <input
-            className="border text-black"
-            type="text"
-            {...signUpForm.register("name")}
-          />
+          <div className="mb-4 flex flex-col">
+            <label className="mb-1 text-sm" htmlFor="">
+              Nome
+            </label>
+            <Input {...signUpForm.register("name")} />
 
-          {signUpForm.formState.errors["name"] && (
-            <p>{signUpForm.formState.errors["name"].message}</p>
-          )}
-        </div>
+            {signUpForm.formState.errors["name"] && (
+              <p className="mt-1 text-sm text-red-400">
+                {signUpForm.formState.errors["name"].message}
+              </p>
+            )}
+          </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="">Senha</label>
-          <input
-            className="border text-black"
-            type="text"
-            {...signUpForm.register("password")}
-          />
+          <div className="mb-4 flex flex-col">
+            <label className="mb-1 text-sm" htmlFor="">
+              Senha
+            </label>
+            <Input {...signUpForm.register("password")} />
 
-          {signUpForm.formState.errors["password"] && (
-            <p>{signUpForm.formState.errors["password"].message}</p>
-          )}
-        </div>
+            {signUpForm.formState.errors["password"] && (
+              <p className="mt-1 text-sm text-red-400">
+                {signUpForm.formState.errors["password"].message}
+              </p>
+            )}
+          </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="">Confirme a senha</label>
-          <input
-            className="border text-black"
-            type="text"
-            {...signUpForm.register("confirmPassword")}
-          />
+          <div className="mb-4 flex flex-col">
+            <label className="mb-1 text-sm" htmlFor="">
+              Confirme a senha
+            </label>
+            <Input {...signUpForm.register("confirmPassword")} />
 
-          {signUpForm.formState.errors["confirmPassword"] && (
-            <p>{signUpForm.formState.errors["confirmPassword"].message}</p>
-          )}
-        </div>
+            {signUpForm.formState.errors["confirmPassword"] && (
+              <p className="mt-1 text-sm text-red-400">
+                {signUpForm.formState.errors["confirmPassword"].message}
+              </p>
+            )}
+          </div>
 
-        <button className="bg-purple-500">Registrar-se</button>
-      </form>
+          <Button className="bg-purple-500">Registrar-se</Button>
+        </form>
+      </div>
     </div>
   );
 }

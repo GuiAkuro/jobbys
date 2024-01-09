@@ -10,11 +10,15 @@ export default function Dashboard() {
     <div>
       <Header />
 
-      {user.isLoading ? (
-        <span>carregando</span>
-      ) : (
-        <h1>Bem-vindo ao Dashboard {user.data?.name}</h1>
-      )}
+      <div>
+        <div className="container mx-auto py-6">
+          {user.isLoading ? (
+            <span>carregando</span>
+          ) : (
+            <h1>Bem-vindo ao Dashboard {user.data?.name}</h1>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

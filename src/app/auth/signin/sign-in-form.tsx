@@ -1,9 +1,13 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Header } from "@/components/header";
 
 interface SignInFormProps {}
 
@@ -14,7 +18,9 @@ const signInFormSchema = z.object({
 
 export function SignInForm({}: SignInFormProps) {
   const router = useRouter();
-  const signInForm = useForm<z.infer<typeof signInFormSchema>>();
+  const signInForm = useForm<z.infer<typeof signInFormSchema>>({
+    resolver: zodResolver(signInFormSchema),
+  });
 
   async function handleSignIn(data: z.infer<typeof signInFormSchema>) {
     const res = await signIn("credentials", {
@@ -30,35 +36,39 @@ export function SignInForm({}: SignInFormProps) {
 
   return (
     <div>
-      <form className="p-6" onSubmit={signInForm.handleSubmit(handleSignIn)}>
-        <div className="flex flex-col">
-          <label htmlFor="">E-mail</label>
-          <input
-            className="border text-black"
-            type="text"
-            {...signInForm.register("email")}
-          />
+      <Header />
 
-          {signInForm.formState.errors["email"] && (
-            <p>{signInForm.formState.errors["email"].message}</p>
-          )}
-        </div>
+      <div className="container mx-auto">
+        <form className="p-6" onSubmit={signInForm.handleSubmit(handleSignIn)}>
+          <div className="mb-4 flex flex-col">
+            <label className="mb-1 text-sm" htmlFor="">
+              E-mail
+            </label>
+            <Input {...signInForm.register("email")} />
 
-        <div className="flex flex-col">
-          <label htmlFor="">Senha</label>
-          <input
-            className="border text-black"
-            type="text"
-            {...signInForm.register("password")}
-          />
+            {signInForm.formState.errors["email"] && (
+              <p className="mt-1 text-sm text-red-400">
+                {signInForm.formState.errors["email"].message}
+              </p>
+            )}
+          </div>
 
-          {signInForm.formState.errors["password"] && (
-            <p>{signInForm.formState.errors["password"].message}</p>
-          )}
-        </div>
+          <div className="mb-4 flex flex-col">
+            <label className="mb-1 text-sm" htmlFor="">
+              Senha
+            </label>
+            <Input {...signInForm.register("password")} type="password" />
 
-        <button className="bg-purple-500">Entrar</button>
-      </form>
+            {signInForm.formState.errors["password"] && (
+              <p className="mt-1 text-sm text-red-400">
+                {signInForm.formState.errors["password"].message}
+              </p>
+            )}
+          </div>
+
+          <Button className="bg-purple-500">Entrar</Button>
+        </form>
+      </div>
     </div>
   );
 }
