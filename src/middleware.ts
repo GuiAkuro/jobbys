@@ -4,6 +4,10 @@ import { authRoutes, publicApiRoutes } from "./server/auth/routes";
 export default withAuth({
   callbacks: {
     authorized: async ({ req, token }) => {
+      if (req.nextUrl.pathname === "/") {
+        return true;
+      }
+
       if (authRoutes.includes(req.nextUrl.pathname)) {
         return true;
       }

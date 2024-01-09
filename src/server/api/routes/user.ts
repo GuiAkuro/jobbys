@@ -30,7 +30,11 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
-  getUser: privateProcedure.query(() => {
-    return "hello from private route";
+  getUser: privateProcedure.query(({ ctx }) => {
+    return ctx.db.user.findFirst({
+      where: {
+        email: ctx.session?.user?.email,
+      },
+    });
   }),
 });

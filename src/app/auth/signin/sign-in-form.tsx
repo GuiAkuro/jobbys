@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -12,13 +13,19 @@ const signInFormSchema = z.object({
 });
 
 export function SignInForm({}: SignInFormProps) {
+  const router = useRouter();
   const signInForm = useForm<z.infer<typeof signInFormSchema>>();
 
   async function handleSignIn(data: z.infer<typeof signInFormSchema>) {
-    await signIn("credentials", {
+    const res = await signIn("credentials", {
+      redirect: false,
       email: data.email,
       password: data.password,
     });
+
+    if (res?.ok) {
+      router.push("/dashboard");
+    }
   }
 
   return (
