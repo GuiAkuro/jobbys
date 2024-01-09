@@ -1,12 +1,11 @@
 import "server-only";
 
-import NextAuth from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import * as bcrypt from "bcrypt";
 import { db } from "../database";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(db),
+export const config = {
   providers: [
     Credentials({
       credentials: {
@@ -15,20 +14,31 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
 
       async authorize(credentials) {
-        if (
-          credentials &&
-          credentials.email === "g.alves.oliv@gmail.com" &&
-          credentials.password === "123"
-        ) {
-          return {
-            id: "1",
-            name: "Guilherme",
-            email: "g.alves.oliv@gmail.com",
-          };
+        if (credentials && credentials.email && credentials.password) {
+          const user = await db.user.findFirst({
+            where: {
+              email: credentials.email,
+            },
+          });
+
+          if (user && user.password) {
+            const passwordMatch = await bcrypt.compare(
+              credentials.password as string,
+              user.password,
+            );
+
+            if (passwordMatch) {
+              return user;
+            }
+          }
         }
 
         return null;
       },
     }),
   ],
-});
+
+  pages: {
+    signIn: "/auth/signin",
+  },
+} satisfies NextAuthOptions;

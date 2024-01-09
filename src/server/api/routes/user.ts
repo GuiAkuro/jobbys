@@ -31,6 +31,6 @@ export const userRouter = createTRPCRouter({
     }),
 
   getUser: privateProcedure.query(() => {
-    return "hello teste";
+    return "hello from private route";
   }),
 });

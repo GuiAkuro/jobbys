@@ -6,14 +6,14 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "@/server/database";
-import { auth } from "../auth";
+import { getServerSession } from "next-auth";
 
 interface CreateContextOptions {
   headers: Headers;
 }
 
 export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
-  const session = await auth();
+  const session = await getServerSession();
 
   return {
     headers: opts.headers,
