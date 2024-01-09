@@ -1,1 +1,20 @@
-export const db = {};
+import "server-only";
+
+import { PrismaClient } from "@prisma/client";
+
+const prismaGlobal = global as typeof global & {
+  prisma?: PrismaClient;
+};
+
+export const db: PrismaClient =
+  prismaGlobal.prisma ??
+  new PrismaClient({
+    log:
+      process.env.NODE_ENV === "development"
+        ? ["query", "error", "warn"]
+        : ["error"],
+  });
+
+if (process.env.NODE_ENV !== "production") {
+  prismaGlobal.prisma = db;
+}
