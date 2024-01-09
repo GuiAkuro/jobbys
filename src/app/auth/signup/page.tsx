@@ -1,11 +1,9 @@
-"use client";
+import { SignUpForm } from "./sign-up-form";
 
 export default function SignUp() {
-  const register = {};
-
   return (
     <div>
-      <h1>sign up</h1>
+      <SignUpForm />
     </div>
   );
 }

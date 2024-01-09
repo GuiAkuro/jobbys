@@ -1,9 +1,11 @@
 "use client";
 
+import { SignInForm } from "./sign-in-form";
+
 export default function SignIn() {
   return (
     <div>
-      <h1>sign in</h1>
+      <SignInForm />
     </div>
   );
 }
